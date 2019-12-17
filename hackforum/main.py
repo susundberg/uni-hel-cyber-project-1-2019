@@ -1,21 +1,23 @@
 
 
 import os.path 
-APP_FOLDER = os.path.dirname( os.path.realpath(__file__))
+import logging as log
 
+log.basicConfig(level=log.INFO)
+APP_FOLDER = os.path.dirname( os.path.realpath(__file__))
 
 if __name__=="__main__":
    import sys
    sys.path.append( APP_FOLDER + "/bottle" )
    os.chdir( APP_FOLDER ) 
+   log.info("Starting at %s", APP_FOLDER )
+
 
 import uuid
 import bottle 
 import bottle.ext.sqlite # pylint: disable=E0611,E0401
 import sqlite3
-import logging as log
 
-log.basicConfig(level=log.INFO)
 
 import config 
 
@@ -133,6 +135,7 @@ def login_post( db ):
 def server_static(filename):
     return bottle.static_file( filename, root=APP_FOLDER + '/data_static/')
 
-
-BOTTLE_APP.run(host='localhost', port=8080)
+if __name__=="__main__":
+    log.info("Starting the main application NOW!")
+    BOTTLE_APP.run(host='0.0.0.0', port=8080 )
 
